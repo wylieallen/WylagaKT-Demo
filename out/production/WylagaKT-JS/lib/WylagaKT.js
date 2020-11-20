@@ -2293,15 +2293,21 @@ var WylagaKT = function (_, Kotlin) {
     simpleName: 'ScrollingLogo',
     interfaces: [Tickable, Displayable]
   };
+  var LAYERS;
   function Starfield(width, height, starCount) {
+    this.width_0 = width;
     this.height_0 = height;
     this.displayRoot_0 = new CompositeDisplayable([]);
     this.tickRoot_0 = new CompositeTickable([]);
-    this.displayRoot_0.add_8p1vy5$(new SolidRect(width, this.height_0, Color$Companion_getInstance().BLACK));
-    for (var i = 1; i <= starCount; i++) {
-      var star = new Starfield$Star(this, Random.Default.nextDouble() * width, Random.Default.nextDouble() * this.height_0, Random.Default.nextDouble() * 3 + 0.2, 1.0, new Color(Random.Default.nextInt_za3lpa$(255), Random.Default.nextInt_za3lpa$(255), Random.Default.nextInt_za3lpa$(255)));
-      this.displayRoot_0.add_8p1vy5$(star);
-      this.tickRoot_0.add_1ih14v$(star);
+    this.displayRoot_0.add_8p1vy5$(new SolidRect(this.width_0, this.height_0, Color$Companion_getInstance().BLACK));
+    var starsPerLayer = starCount / 4 | 0;
+    for (var i = 1; i <= 4; i++) {
+      var topLayer = new Starfield$StarLayer(this, 0.0, -this.height_0, i, starsPerLayer);
+      var bottomLayer = new Starfield$StarLayer(this, 0.0, 0.0, i, starsPerLayer);
+      this.displayRoot_0.add_8p1vy5$(topLayer);
+      this.displayRoot_0.add_8p1vy5$(bottomLayer);
+      this.tickRoot_0.add_1ih14v$(topLayer);
+      this.tickRoot_0.add_1ih14v$(bottomLayer);
     }
   }
   Starfield.prototype.display_9kr3df$ = function (p) {
@@ -2310,23 +2316,32 @@ var WylagaKT = function (_, Kotlin) {
   Starfield.prototype.tick = function () {
     this.tickRoot_0.tick();
   };
-  function Starfield$Star($outer, x, y, dy, size, color) {
+  function Starfield$StarLayer($outer, x, y, dy, starCount) {
     this.$outer = $outer;
     this.dy_0 = dy;
-    this.displayable_0 = new TranslatedDisplayable(x, y, new SolidRect(size, size, color));
+    this.displayable_0 = null;
+    var composite = new CompositeDisplayable([]);
+    this.displayable_0 = new TranslatedDisplayable(x, y, composite);
+    var size = 1.0 + Random.Default.nextInt_za3lpa$(2);
+    for (var i = 1; i <= starCount; i++) {
+      composite.add_8p1vy5$(this.makeStar_0(size));
+    }
   }
-  Starfield$Star.prototype.display_9kr3df$ = function (p) {
+  Starfield$StarLayer.prototype.display_9kr3df$ = function (p) {
     this.displayable_0.display_9kr3df$(p);
   };
-  Starfield$Star.prototype.tick = function () {
+  Starfield$StarLayer.prototype.tick = function () {
     this.displayable_0.y = this.displayable_0.y + this.dy_0;
     if (this.displayable_0.y >= this.$outer.height_0) {
-      this.displayable_0.y = 0.0;
+      this.displayable_0.y = -this.$outer.height_0;
     }
   };
-  Starfield$Star.$metadata$ = {
+  Starfield$StarLayer.prototype.makeStar_0 = function (size) {
+    return new TranslatedDisplayable(Random.Default.nextDouble_14dthe$(this.$outer.width_0), Random.Default.nextDouble_14dthe$(this.$outer.height_0), new SolidRect(size, size, new Color(Random.Default.nextInt_za3lpa$(255), Random.Default.nextInt_za3lpa$(255), Random.Default.nextInt_za3lpa$(255))));
+  };
+  Starfield$StarLayer.$metadata$ = {
     kind: Kind_CLASS,
-    simpleName: 'Star',
+    simpleName: 'StarLayer',
     interfaces: [Tickable, Displayable]
   };
   Starfield.$metadata$ = {
@@ -3945,6 +3960,11 @@ var WylagaKT = function (_, Kotlin) {
   var package$view = package$wylaga.view || (package$wylaga.view = {});
   var package$backgrounds = package$view.backgrounds || (package$view.backgrounds = {});
   package$backgrounds.ScrollingLogo = ScrollingLogo;
+  Object.defineProperty(package$backgrounds, 'LAYERS', {
+    get: function () {
+      return LAYERS;
+    }
+  });
   package$backgrounds.Starfield = Starfield;
   Object.defineProperty(Color, 'Companion', {
     get: Color$Companion_getInstance
@@ -4006,9 +4026,10 @@ var WylagaKT = function (_, Kotlin) {
   Object.defineProperty(package$sample, 'Platform', {
     get: Platform_getInstance
   });
-  Entity.prototype.move = Movable.prototype.move;
-  Entity.prototype.moveBy_lu1900$ = Movable.prototype.moveBy_lu1900$;
   Entity.prototype.moveTo_lu1900$ = Movable.prototype.moveTo_lu1900$;
+  Entity.prototype.moveBy_lu1900$ = Movable.prototype.moveBy_lu1900$;
+  Entity.prototype.move = Movable.prototype.move;
+  LAYERS = 4;
   WIDTH = 1600.0;
   HEIGHT = 900.0;
   Kotlin.defineModule('WylagaKT', _);

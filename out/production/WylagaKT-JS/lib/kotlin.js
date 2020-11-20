@@ -23983,7 +23983,7 @@
       if (list.size <= 1)
         return;
       var array = copyToArray(list);
-      array.sort(comparator.compare.bind(comparator));
+      sortArrayWith_0(array, comparator);
       for (var i = 0; i < array.length; i++) {
         list.set_wxm5ur$(i, array[i]);
       }
@@ -37551,7 +37551,7 @@
     function KotlinVersion$Companion() {
       KotlinVersion$Companion_instance = this;
       this.MAX_COMPONENT_VALUE = 255;
-      this.CURRENT = new KotlinVersion(1, 3, 20);
+      this.CURRENT = new KotlinVersion(1, 3, 21);
     }
     KotlinVersion$Companion.$metadata$ = {kind: Kind_OBJECT, simpleName: 'Companion', interfaces: []};
     var KotlinVersion$Companion_instance = null;

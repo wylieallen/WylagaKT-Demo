@@ -1,10 +1,8 @@
 if (typeof kotlin === 'undefined') {
   throw new Error("Error loading module 'WylagaKT-JS'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'WylagaKT-JS'.");
-}
-if (typeof WylagaKT === 'undefined') {
+}if (typeof WylagaKT === 'undefined') {
   throw new Error("Error loading module 'WylagaKT-JS'. Its dependency 'WylagaKT' was not found. Please, check whether 'WylagaKT' is loaded prior to 'WylagaKT-JS'.");
-}
-this['WylagaKT-JS'] = function (_, Kotlin, $module$WylagaKT) {
+}this['WylagaKT-JS'] = function (_, Kotlin, $module$WylagaKT) {
   'use strict';
   var throwCCE = Kotlin.throwCCE;
   var Wylaga = $module$WylagaKT.wylaga.Wylaga;
@@ -14,6 +12,7 @@ this['WylagaKT-JS'] = function (_, Kotlin, $module$WylagaKT) {
   var toString = Kotlin.toString;
   var Kind_CLASS = Kotlin.Kind.CLASS;
   var Painter = $module$WylagaKT.wylaga.view.display.Painter;
+  var Math_0 = Math;
   var AbstractDisplayable = $module$WylagaKT.wylaga.view.display.displayables.AbstractDisplayable;
   HTMLImageDisplayable.prototype = Object.create(AbstractDisplayable.prototype);
   HTMLImageDisplayable.prototype.constructor = HTMLImageDisplayable;
@@ -35,16 +34,15 @@ this['WylagaKT-JS'] = function (_, Kotlin, $module$WylagaKT) {
       var delta = closure$now.v - closure$last.v + closure$carry.v;
       if (delta > 1000) {
         delta = 1000.0;
-      }
-      while (delta >= closure$dt) {
+      }while (delta >= closure$dt) {
         delta -= closure$dt;
         closure$wylaga.tick();
         closure$wylaga.display_9kr3df$(closure$canvasPainter);
       }
       closure$carry.v = delta;
       closure$last.v = closure$now.v;
-      window.requestAnimationFrame(getCallableRef('tick', function (timestamp) {
-        return closure$tick(timestamp), Unit;
+      window.requestAnimationFrame(getCallableRef('tick', function (p1) {
+        return closure$tick(p1), Unit;
       }));
     };
   }
@@ -61,8 +59,8 @@ this['WylagaKT-JS'] = function (_, Kotlin, $module$WylagaKT) {
     window.onkeyup = main$lambda(controller);
     window.onkeydown = main$lambda_0(controller);
     var tick = main$tick(now, last, carry, dt, wylaga, canvasPainter);
-    window.requestAnimationFrame(getCallableRef('tick', function (timestamp) {
-      return tick(timestamp), Unit;
+    window.requestAnimationFrame(getCallableRef('tick', function (p1) {
+      return tick(p1), Unit;
     }));
   }
   function CanvasPainter(ctx) {
@@ -75,7 +73,7 @@ this['WylagaKT-JS'] = function (_, Kotlin, $module$WylagaKT) {
     this.ctx_0.restore();
   };
   CanvasPainter.prototype.translate_lu1900$ = function (x, y) {
-    this.ctx_0.translate(x, y);
+    this.ctx_0.translate(Math_0.floor(x), Math_0.floor(y));
   };
   CanvasPainter.prototype.rotate_14dthe$ = function (theta) {
     this.ctx_0.rotate(theta);
